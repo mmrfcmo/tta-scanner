@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: brand-position-partners
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm run start:bpp
+    healthCheckPath: /health
+    envVars:
+      - key: BRAND_POSITION_FORMSPREE_ENDPOINT
+        sync: false
