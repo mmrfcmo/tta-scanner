@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start:bpp": "node bpp-server.js"
+    "start:bpp": "node bpp-server.js",
+    "test:bpp": "node bpp-snapshot-integration-test.js"
   },
   "dependencies": {
     "axios": "^1.20.0",
