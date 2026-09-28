@@ -17,7 +17,6 @@ const DIMENSION_RULES = {
 function pillarEvidence(scan, pillarName) {
   const pillar = (scan?.pillars || []).find(p => p.name === pillarName);
   if (!pillar) return null;
-
   return {
     pillar: pillarName,
     score: Number(pillar.percentage || 0),
@@ -26,38 +25,28 @@ function pillarEvidence(scan, pillarName) {
   };
 }
 
-function buildEvidenceLedger(scan, dimensionScores) {
+function buildEvidenceLedger(scan, dimensionScores = {}) {
   return Object.entries(DIMENSION_RULES).map(([dimension, pillars]) => {
-    const evidence = pillars
-      .map(name => pillarEvidence(scan, name))
-      .filter(Boolean);
-
+    const evidence = pillars.map(name => pillarEvidence(scan, name)).filter(Boolean);
     const available = evidence.length;
     const expected = pillars.length;
     const coverage = expected ? available / expected : 0;
-
-    // Confidence reflects evidence availability, not whether the score is high.
     const confidence = Math.round(coverage * 100);
 
     return {
       dimension,
-      score: Number(dimensionScores?.[dimension] || 0),
+      score: Number(dimensionScores[dimension] || 0),
       confidence,
+      coverage,
       evidenceCoverage: `${available}/${expected}`,
       evidence,
-      assessmentStatus:
-        confidence >= 80 ? 'supported' :
-        confidence >= 50 ? 'limited' :
-        'insufficient'
+      assessmentStatus: confidence >= 80 ? 'supported' : confidence >= 50 ? 'limited' : 'insufficient'
     };
   });
 }
 
 function validateLedger(ledger) {
-  const invalid = ledger.filter(item =>
-    item.assessmentStatus === 'insufficient'
-  );
-
+  const invalid = ledger.filter(item => item.assessmentStatus === 'insufficient');
   return {
     valid: invalid.length === 0,
     insufficientDimensions: invalid.map(item => item.dimension),
@@ -67,8 +56,4 @@ function validateLedger(ledger) {
   };
 }
 
-module.exports = {
-  DIMENSION_RULES,
-  buildEvidenceLedger,
-  validateLedger
-};
+module.exports = { DIMENSION_RULES, buildEvidenceLedger, validateLedger };
