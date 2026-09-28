@@ -1,8 +1,6 @@
 /**
  * Lightweight integration harness for the BPP Snapshot pipeline.
- * Run with: node bpp-snapshot-integration-test.js
- *
- * It validates the orchestration contract without touching TTA routes.
+ * Run with: npm run test:bpp
  */
 
 const { runBrandPositionSnapshot } = require('./brand-position-app');
@@ -22,7 +20,7 @@ const website = process.argv[2] || 'https://example.com';
       typeof result?.brandPosition?.assessmentStatus === 'string'
     ];
 
-    if (required.some(Boolean) === false) {
+    if (!required.every(Boolean)) {
       throw new Error('BPP Snapshot response contract failed');
     }
 
