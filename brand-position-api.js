@@ -3,23 +3,30 @@ const { runBrandPositionSnapshot, captureLead } = require('./brand-position-app'
 
 const router = express.Router();
 
-router.post('/scan', async (req, res) => {
+// Mounted at /api by bpp-server.js.
+router.post('/brand-position/scan', async (req, res) => {
   try {
     const result = await runBrandPositionSnapshot(req.body?.website);
     res.json(result);
   } catch (error) {
     console.error('BPP scan error:', error);
-    res.status(400).json({ success: false, error: error.message || 'Unable to complete the Brand Position Snapshot' });
+    res.status(400).json({
+      success: false,
+      error: error.message || 'Unable to complete the Brand Position Snapshot'
+    });
   }
 });
 
-router.post('/lead', async (req, res) => {
+router.post('/brand-position/lead', async (req, res) => {
   try {
     const result = await captureLead(req.body || {});
     res.json({ success: true, notification: result });
   } catch (error) {
     console.error('BPP lead notification error:', error);
-    res.status(502).json({ success: false, error: 'Lead notification could not be sent' });
+    res.status(502).json({
+      success: false,
+      error: 'Lead notification could not be sent'
+    });
   }
 });
 
