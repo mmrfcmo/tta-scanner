@@ -59,7 +59,7 @@ async function runTrustScan(websiteUrl) {
   const issueMap = { 'Contact Page': 'Add a Contact Page', 'About Page': 'Add an About Page', 'CTA': 'Add Clear Calls-to-Action', 'Testimonials': 'Collect and Display Reviews', 'FAQ': 'Add an FAQ Section', 'Service Pages': 'Detail Your Services', 'Privacy Policy': 'Add a Privacy Policy' };
   standards.forEach(s => { if (!s.passed && issueMap[s.name]) issues.push({ title: issueMap[s.name], detail: 'Your website is missing a ' + s.name.toLowerCase() + '.' }); });
 
-  const totalScore = Math.round((pillars.online_presence.score / pillars.online_presence.max  25) + (pillars.reputation.score / pillars.reputation.max  30) + (pillars.engagement.score / pillars.engagement.max  20) + (pillars.transparency.score / pillars.transparency.max  15) + (pillars.technical.score / pillars.technical.max * 10));
+  const totalScore = Math.round((pillars.online_presence.score / pillars.online_presence.max * 25) + (pillars.reputation.score / pillars.reputation.max * 30) + (pillars.engagement.score / pillars.engagement.max * 20) + (pillars.transparency.score / pillars.transparency.max * 15) + (pillars.technical.score / pillars.technical.max * 10));
   const grade = totalScore >= 75 ? 'good' : totalScore >= 50 ? 'fair' : totalScore >= 25 ? 'poor' : 'critical';
   const passed = standards.filter(s => s.passed).length;
 
